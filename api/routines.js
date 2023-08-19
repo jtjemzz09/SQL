@@ -4,7 +4,6 @@ const { getAllPublicRoutines, createRoutine, updateRoutine, getRoutineById, dest
 const { requireUser, requiredNotSent } = require('./utils')
 
 
-
 // GET /api/routines
 router.get('/', async (req, res, next) => {
   try {
@@ -15,6 +14,18 @@ router.get('/', async (req, res, next) => {
     next(error)
   }
 })
+
+//GET api routines by ID
+
+router.get('/:activityId', async (req, res, next) => {
+    try {
+        const routineId = req.params.activityId; // Use 'activityId' instead of 'id'
+        const routine = await getRoutineById(routineId);
+        res.send(routine);
+    } catch (error) {
+        next(error);
+    }
+});
 
 // POST /api/routines
 router.post('/', requireUser, requiredNotSent({requiredParams: ['name', 'goal']}), async (req, res, next) => {

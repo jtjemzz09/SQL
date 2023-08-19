@@ -1,8 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const { getAllActivities, getActivityById, getActivityByName, createActivity, updateActivity, getPublicRoutinesByActivity } = require('../db');
-const { requireUser, requiredNotSent } = require('./utils')
+const { requireUser, requiredNotSent, } = require('./utils')
 
+
+
+//get activities by ID
+router.get('/:activityId', async (req, res, next) => {
+    try {
+        const activityId = req.params.activityId; // Use 'activityId' instead of 'id'
+        const activity = await getActivityById(activityId);
+        res.send(activity);
+    } catch (error) {
+        next(error);
+    }
+});
 // GET /api/activities/:activityId/routines
 router.get('/:activityId/routines', async (req, res, next) => {
   try {

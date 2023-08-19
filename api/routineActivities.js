@@ -1,9 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const { updateRoutineActivity, canEditRoutineActivity, destroyRoutineActivity, getRoutineActivityById } = require('../db');
+const { updateRoutineActivity, canEditRoutineActivity, destroyRoutineActivity, getRoutineActivityById, getAllRoutineActivities} = require('../db');
 const client = require('../db/client');
 const { requireUser, requiredNotSent } = require('./utils')
 
+
+
+//get all routine_activities
+router.get('/', async (req, res, next) => {
+  try {
+    const routineActivity = await getAllRoutineActivities();
+    res.send(routineActivity);
+  } catch (error) {
+    next(error)
+  }
+})
+
+//GET all routine_activities
+
+router.get('/:routineActivityId', async (req, res, next) => {
+    try {
+        const routineActivityId = req.params.routineActivityId; // Use 'activityId' instead of 'id'
+        const routineActivity = await getRoutineActivityById(routineActivityId);
+        res.send(routineActivity);
+    } catch (error) {
+        next(error);
+    }
+});
 
 
 // PATCH /api/routine_activities/:routineActivityId
